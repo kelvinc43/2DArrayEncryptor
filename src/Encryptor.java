@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Encryptor
 {
   /** A two-dimensional array of single-character strings, instantiated in the constructor */
@@ -108,7 +111,45 @@ public class Encryptor
    */
   public String decryptMessage(String encryptedMessage)
   {
-    int num = numCols * numRows;
-    int a = encryptedMessage.length() / num;
-  }
+      String message = encryptedMessage;
+      String original = "";
+      int num = numCols * numRows;
+      int a = encryptedMessage.length() / num;
+      int t = 0;
+      ArrayList<String> mes = new ArrayList<String>();
+      while (t < encryptedMessage.length() - 1) {
+        for (int i = numCols - 1; i >= 0; i--) {
+          for (int x = numRows - 1; x >= 0; x--) {
+            letterBlock[x][i] = message.substring(message.length() - (t+1), message.length() - t);
+
+            if (t < encryptedMessage.length() - 1) t++;
+          }
+        }
+        for (int s = 0; s < letterBlock.length; s++) {
+          for (int x = 0; x < numCols; x++) {
+            // System.out.println(letterBlock[s][x]);
+            mes.add(letterBlock[s][x]);
+          }
+        }
+      }
+      String temp = "";
+      for (int i = 0; i < mes.size(); i++) {
+        temp += mes.get(i);
+      }
+      for (int i = 0; i < (temp.length() / num); i++) {
+        original += temp.substring(temp.length() - (num * (i + 1)), temp.length() - (num * i) );
+      }
+
+        int start = original.length() / num;
+        String As = original.substring((start*num) - num);
+        int n = As.indexOf("A");
+        if (n != -1) {
+          String rest = As.substring(0, n);
+          original = original.substring(0, (start * num) - num);
+          original += rest;
+        }
+
+      return original;
+    }
+
 }
